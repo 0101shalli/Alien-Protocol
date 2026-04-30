@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VaultController } from './vault.controller';
+import { VaultService } from './vault.service';
 
-const VALID_ADDRESS = 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN';
+const VALID_ADDRESS = 'G' + 'A'.repeat(55);
 
 describe('VaultController', () => {
   let controller: VaultController;
@@ -9,6 +10,12 @@ describe('VaultController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [VaultController],
+      providers: [
+        {
+          provide: VaultService,
+          useValue: { getVaultsByOwner: jest.fn().mockResolvedValue([]) },
+        },
+      ],
     }).compile();
 
     controller = module.get<VaultController>(VaultController);

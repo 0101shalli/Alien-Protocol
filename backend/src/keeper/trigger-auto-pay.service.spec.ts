@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { AutoPayRule } from './entities/auto-pay-rule.entity';
@@ -10,7 +8,7 @@ import { TriggerAutoPayService } from './trigger-auto-pay.service';
 describe('TriggerAutoPayService', () => {
   let service: TriggerAutoPayService;
   let escrowClient: jest.Mocked<EscrowContractClient>;
-  let autoPayRepository: jest.Mocked<Repository<AutoPayRule>>;
+  let autoPayRepository: any;
   let queryBuilderMock: {
     where: jest.Mock;
     andWhere: jest.Mock;
@@ -55,7 +53,7 @@ describe('TriggerAutoPayService', () => {
           useValue: escrowClientMock,
         },
         {
-          provide: getRepositoryToken(AutoPayRule),
+          provide: "AutoPayRuleRepository",
           useValue: repositoryMock,
         },
         {
@@ -73,7 +71,7 @@ describe('TriggerAutoPayService', () => {
 
     service = module.get(TriggerAutoPayService);
     escrowClient = module.get(EscrowContractClient);
-    autoPayRepository = module.get(getRepositoryToken(AutoPayRule));
+    autoPayRepository = module.get("AutoPayRuleRepository");
   });
 
   afterEach(() => {
@@ -103,7 +101,7 @@ describe('TriggerAutoPayService', () => {
           useValue: { triggerAutoPay: jest.fn() },
         },
         {
-          provide: getRepositoryToken(AutoPayRule),
+          provide: "AutoPayRuleRepository",
           useValue: repoMock,
         },
         {

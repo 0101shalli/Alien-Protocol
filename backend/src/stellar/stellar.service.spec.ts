@@ -1,3 +1,16 @@
+jest.mock('@stellar/stellar-sdk', () => ({
+  rpc: {
+    Server: class {
+      async getNetwork() {
+        return { passphrase: 'Test SDF Network ; September 2015' };
+      }
+    },
+  },
+  Contract: class {
+    constructor(public readonly id: string) {}
+  },
+}), { virtual: true });
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { StellarService } from './stellar.service';
 import { ConfigService } from '../config/config.service';

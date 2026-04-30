@@ -11,12 +11,12 @@ describe('StellarAddressPipe', () => {
   // ── Valid addresses ──────────────────────────────────────────────────────────
 
   it('passes through a valid Stellar address unchanged', () => {
-    const valid = 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN';
+    const valid = 'G' + 'A'.repeat(55);
     expect(pipe.transform(valid)).toBe(valid);
   });
 
   it('accepts another valid address', () => {
-    const valid = 'GCEZWKCA5VLDNRLN3RPRJMRZOX3Z6G5CHCGKUY5ZOBGNERCHLN4PEQX';
+    const valid = 'G' + 'B'.repeat(55);
     expect(pipe.transform(valid)).toBe(valid);
   });
 

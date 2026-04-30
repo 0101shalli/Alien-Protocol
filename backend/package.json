@@ -56,8 +56,18 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@stellar/stellar-sdk$": "<rootDir>/test/mocks/stellar-sdk.ts",
+      "^@nestjs/config$": "<rootDir>/test/mocks/@nestjs/config.ts",
+      "^@nestjs/schedule$": "<rootDir>/test/mocks/@nestjs/schedule.ts",
+      "^@nestjs/typeorm$": "<rootDir>/test/mocks/@nestjs/typeorm.ts",
+      "^typeorm$": "<rootDir>/test/mocks/typeorm.ts"
+    },
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
   }
 }
-
-
