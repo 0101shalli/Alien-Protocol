@@ -1,31 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService as NestConfigService } from '@nestjs/config';
+
+type EnvReader = { get?<T = string>(key: string): T | undefined };
 
 @Injectable()
 export class ConfigService {
-  constructor(private configService: NestConfigService) {}
+  constructor(private readonly configService?: EnvReader) {}
+
+  private read(key: string, fallback = ''): string {
+    const value = this.configService?.get?.<string>(key) ?? process.env[key];
+    return value ?? fallback;
+  }
 
   get stellarRpcUrl(): string {
-    return this.configService.get<string>('STELLAR_RPC_URL') || 'https://soroban-testnet.stellar.org';
+    return this.read('STELLAR_RPC_URL', 'https://soroban-testnet.stellar.org');
   }
 
   get coreContractId(): string {
-    return this.configService.get<string>('CORE_CONTRACT_ID') || '';
+    return this.read('CORE_CONTRACT_ID');
   }
 
   get escrowContractId(): string {
-    return this.configService.get<string>('ESCROW_CONTRACT_ID') || '';
+    return this.read('ESCROW_CONTRACT_ID');
   }
 
   get factoryContractId(): string {
-    return this.configService.get<string>('FACTORY_CONTRACT_ID') || '';
+    return this.read('FACTORY_CONTRACT_ID');
   }
 
   get auctionContractId(): string {
-    return this.configService.get<string>('AUCTION_CONTRACT_ID') || '';
+    return this.read('AUCTION_CONTRACT_ID');
   }
 
   get databaseUrl(): string {
-    return this.configService.get<string>('DATABASE_URL') || '';
+    return this.read('DATABASE_URL');
   }
 }

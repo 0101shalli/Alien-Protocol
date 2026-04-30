@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { Payment } from './entities/payment.entity';
@@ -10,7 +8,7 @@ import { ExecuteScheduledService } from './execute-scheduled.service';
 describe('ExecuteScheduledService', () => {
   let service: ExecuteScheduledService;
   let escrowClient: jest.Mocked<EscrowContractClient>;
-  let paymentRepository: jest.Mocked<Repository<Payment>>;
+  let paymentRepository: any;
 
   const mockPayment = (overrides: Partial<Payment> = {}): Payment =>
     ({
@@ -39,7 +37,7 @@ describe('ExecuteScheduledService', () => {
           useValue: escrowClientMock,
         },
         {
-          provide: getRepositoryToken(Payment),
+          provide: "PaymentRepository",
           useValue: repositoryMock,
         },
         {
@@ -57,7 +55,7 @@ describe('ExecuteScheduledService', () => {
 
     service = module.get(ExecuteScheduledService);
     escrowClient = module.get(EscrowContractClient);
-    paymentRepository = module.get(getRepositoryToken(Payment));
+    paymentRepository = module.get("PaymentRepository");
   });
 
   it('should be defined', () => {
@@ -74,7 +72,7 @@ describe('ExecuteScheduledService', () => {
           useValue: { executeScheduled: jest.fn() },
         },
         {
-          provide: getRepositoryToken(Payment),
+          provide: "PaymentRepository",
           useValue: repoMock,
         },
         {
